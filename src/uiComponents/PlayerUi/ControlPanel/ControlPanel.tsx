@@ -29,6 +29,14 @@ interface ControlPanelProps {
   playbackSpeed: number
   volume: number
   muted: boolean
+  isLive: boolean
+}
+
+function formatTimeToMs(value: number, index: number): string {
+  const currentTime = Math.floor(value)
+  const minutes = Math.floor(currentTime / 60)
+  const seconds = currentTime % 60
+  return `${minutes}:${seconds}`
 }
 
 const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props) {
@@ -44,6 +52,7 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props
     muted,
     showControlPanel,
     duration,
+    isLive,
     currentTime
   } = props
 
@@ -62,11 +71,12 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props
       marginLeft: -12,
       '&:focus,&:hover,&$active': {
         boxShadow: 'inherit'
-      }
+      },
     },
     active: {},
     valueLabel: {
-      left: 'calc(-50% + 4px)'
+      left: 'calc(-50% + 4px)',
+      overflow: 'hidden'
     },
     track: {
       height: 8,
@@ -104,10 +114,10 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props
           </Grid>
           <Grid item xs="auto">
           </Grid>
-          {duration ? <PlaybackSpeedSlider eventDispatcher={eventDispatcher} playbackSpeed={playbackSpeed} /> : null}
+          {!isLive ? <PlaybackSpeedSlider eventDispatcher={eventDispatcher} playbackSpeed={playbackSpeed} /> : null}
           <VolumeSlider eventDispatcher={eventDispatcher} volume={volume} muted={muted} />
-          {duration ? <Forward eventDispatcher={eventDispatcher} /> : null}
-          {duration ? <Replay eventDispatcher={eventDispatcher} /> : null}
+          {!isLive ? <Forward eventDispatcher={eventDispatcher} /> : null}
+          {!isLive ? <Replay eventDispatcher={eventDispatcher} /> : null}
           {LevelButtons({ levels, currentLevel, eventDispatcher, levelSwitching })}
         </Grid>
       </Panel>
@@ -122,6 +132,7 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props
               step={1}
               valueLabelDisplay="auto"
               value={currentTime}
+              valueLabelFormat={formatTimeToMs}
               onChange={(event, value) => eventDispatcher.dispatchEvent(new CustomEvent('requestSeek', { detail: value }))}
             />
           </Grid>

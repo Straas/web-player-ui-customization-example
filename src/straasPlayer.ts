@@ -6,6 +6,10 @@ interface StraasWindow extends Window {
   StraaSOnInit: () => void
 }
 
+interface IndexableStrings {
+  [index: string]: string
+}
+
 function loadStraasPlayerJs() {
   const head = document.getElementsByTagName('head')[0]
   const scriptElement = document.createElement('script')
@@ -84,7 +88,7 @@ async function loadVideo(containingElementSelector: string, eventDispatcher: HTM
     const StraaS = straasWin.StraaS
     const Player = StraaS.Player
 
-    const mediaConfig: any = {
+    const mediaConfig: IndexableStrings = {
       type: Player.Type.VIDEO,
       id: 'PKLQhfZh',
       accountId: 'demo.straas.io-test',
@@ -116,6 +120,9 @@ async function loadVideo(containingElementSelector: string, eventDispatcher: HTM
       events: {
         canplay: () => {
           eventDispatcher.dispatchEvent(new Event('canplay'))
+          if (mediaConfig.type === 'live') {
+            eventDispatcher.dispatchEvent(new Event('isLive'))
+          }
         },
         play: () => {
           eventDispatcher.dispatchEvent(new Event('play'))

@@ -62,6 +62,7 @@ const App = () => {
   const [playbackSpeed, setPlaybackSpeed] = useState(0)
   const [volume, setVolume] = useState(0)
   const [muted, setMuted] = useState(false)
+  const [isLive, setLive] = useState(false)
   const [playerInstance, setPlayerInstance] = useState<IndexableObject | null>(null)
 
   eventDispatcher.addEventListener('canplay', () => {
@@ -74,6 +75,10 @@ const App = () => {
 
   eventDispatcher.addEventListener('paused', () => {
     setPlaying(false)
+  })
+
+  eventDispatcher.addEventListener('isLive', () => {
+    setLive(true)
   })
 
   document.body.addEventListener('fullscreenchange', () => {
@@ -150,6 +155,7 @@ const App = () => {
           playbackSpeed={playbackSpeed}
           volume={volume}
           muted={muted}
+          isLive={isLive}
         /> : null}
     </BodyContainer >
   )
