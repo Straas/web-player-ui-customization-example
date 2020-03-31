@@ -104,10 +104,10 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props
           </Grid>
           <Grid item xs="auto">
           </Grid>
-          <PlaybackSpeedSlider eventDispatcher={eventDispatcher} playbackSpeed={playbackSpeed} />
+          {duration ? <PlaybackSpeedSlider eventDispatcher={eventDispatcher} playbackSpeed={playbackSpeed} /> : null}
           <VolumeSlider eventDispatcher={eventDispatcher} volume={volume} muted={muted} />
-          <Forward eventDispatcher={eventDispatcher} />
-          <Replay eventDispatcher={eventDispatcher} />
+          {duration ? <Forward eventDispatcher={eventDispatcher} /> : null}
+          {duration ? <Replay eventDispatcher={eventDispatcher} /> : null}
           {LevelButtons({ levels, currentLevel, eventDispatcher, levelSwitching })}
         </Grid>
       </Panel>
