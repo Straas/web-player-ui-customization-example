@@ -1,0 +1,32 @@
+{
+  "name": "player-ui-customization-sample",
+  "version": "1.0.0",
+  "main": "index.js",
+  "author": "kiwi <kiwi71728@icloud.com>",
+  "license": "MIT",
+  "scripts": {
+    "start": "webpack-dev-server"
+  },
+  "dependencies": {
+    "@material-ui/core": "^4.9.5",
+    "@material-ui/icons": "^4.9.1",
+    "@types/react-dom": "^16.9.5",
+    "clsx": "^1.1.0",
+    "lodash": "^4.17.15",
+    "prop-types": "^15.7.2",
+    "react": "^16.13.0",
+    "react-dom": "^16.13.0",
+    "typescript": "^3.8.3",
+    "webpack": "^4.41.6"
+  },
+  "devDependencies": {
+    "@types/lodash": "^4.14.149",
+    "@types/react": "^16.9.23",
+    "http-server": "^0.12.1",
+    "npm-run-all": "^4.1.5",
+    "svg-inline-loader": "^0.8.2",
+    "ts-loader": "^6.2.1",
+    "webpack-cli": "^3.3.11",
+    "webpack-dev-server": "^3.10.3"
+  }
+}
