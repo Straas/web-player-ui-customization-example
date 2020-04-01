@@ -43,7 +43,10 @@ function installEvents(player: any, eventDispatcher: HTMLElement) {
 
   eventDispatcher.addEventListener('requestForward', (event) => {
     const forwardSeconds = (event as CustomEvent).detail
-    player.currentTime += Math.min(forwardSeconds, player.duration - (player.currentTime + forwardSeconds))
+    const availableForwardSeconds = player.currentTime + forwardSeconds < player.duration
+      ? forwardSeconds : player.duration - player.currentTime
+
+    player.currentTime = Math.floor(player.currentTime + availableForwardSeconds)
   })
 
   eventDispatcher.addEventListener('requestReplay', (event) => {
