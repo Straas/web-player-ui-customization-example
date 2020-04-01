@@ -32,11 +32,13 @@ interface ControlPanelProps {
   isLive: boolean
 }
 
-function formatTimeToMs(value: number, index: number): string {
+function formatTimeToHms(value: number, index: number): string {
   const currentTime = Math.floor(value)
-  const minutes = Math.floor(currentTime / 60)
-  const seconds = currentTime % 60
-  return `${minutes}:${seconds}`
+  const hours = Math.floor(currentTime / 3600)
+  const minutes = String(Math.floor((currentTime % 3600) / 60)).padStart(2, '0')
+  const seconds = String((currentTime % 3600) % 60).padStart(2, '0')
+
+  return `${hours}:${minutes}:${seconds}`
 }
 
 const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props) {
@@ -58,6 +60,19 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props
 
   const iconButtonClasses = getIconButtonClasses()
   const iconClasses = getIconClasses()
+
+  const valueLabelPosition: any = {}
+
+  if (currentTime < 5) {
+    valueLabelPosition.left = '0'
+  }
+  else if (duration - currentTime < 5) {
+    valueLabelPosition.right = '0'
+  }
+  else {
+    valueLabelPosition.left = 'calc(-45px + 50%)'
+  }
+
   const VideoSlider = withStyles({
     root: {
       height: 8
@@ -71,13 +86,21 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props
       marginLeft: -12,
       '&:focus,&:hover,&$active': {
         boxShadow: 'inherit'
-      },
+      }
     },
     active: {},
-    valueLabel: {
-      left: 'calc(-50% + 4px)',
-      overflow: 'hidden'
-    },
+    valueLabel: Object.assign({
+      transition: 'initial',
+      overflow: 'hidden',
+      '& > span': {
+        width: '90px',
+        borderRadius: '4px',
+        transform: 'rotate(0deg)'
+      },
+      '& > span > span': {
+        transform: 'rotate(0deg)'
+      }
+    }, valueLabelPosition),
     track: {
       height: 8,
       borderRadius: 4
@@ -132,7 +155,7 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props
               step={1}
               valueLabelDisplay="auto"
               value={currentTime}
-              valueLabelFormat={formatTimeToMs}
+              valueLabelFormat={formatTimeToHms}
               onChange={(event, value) => eventDispatcher.dispatchEvent(new CustomEvent('requestSeek', { detail: value }))}
             />
           </Grid>
