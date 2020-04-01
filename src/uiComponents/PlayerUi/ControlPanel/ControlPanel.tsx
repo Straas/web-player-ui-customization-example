@@ -63,14 +63,15 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props
 
   const valueLabelPosition: any = {}
 
-  if (currentTime < 5) {
-    valueLabelPosition.left = '0'
+  const currentTimeRatio = currentTime / duration
+  if (currentTimeRatio < 0.1) {
+    valueLabelPosition.left = `${Math.floor((currentTime / duration) * 100) * -1}px`
   }
-  else if (duration - currentTime < 5) {
-    valueLabelPosition.right = '0'
+  else if (currentTimeRatio > 0.9) {
+    valueLabelPosition.right = `${Math.floor((1-(currentTime / duration)) * 100) * -1}px`
   }
   else {
-    valueLabelPosition.left = 'calc(-45px + 50%)'
+    valueLabelPosition.left = 'calc(-30px + 50%)'
   }
 
   const VideoSlider = withStyles({
@@ -93,7 +94,7 @@ const ControlPanel: React.FunctionComponent<ControlPanelProps> = function (props
       transition: 'initial',
       overflow: 'hidden',
       '& > span': {
-        width: '90px',
+        width: '60px',
         borderRadius: '4px',
         transform: 'rotate(0deg)'
       },
